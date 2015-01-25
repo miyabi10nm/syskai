@@ -21,7 +21,6 @@ void main(string[] args) {
   Emp[] emp = lines.toEmp;  
   emp.sort!(Emp.favSort);
 
-  // testing:minRequire = 5; 
   size_t minimam = to!size_t(args[2]);
   Emp[][string] groups = emp.grouping(minimam); 
 
@@ -56,7 +55,6 @@ Emp parse(string line) {
 Emp[][string] grouping(Emp[] emps, size_t minRequire) {
   Emp[][string] groups;
   Emp[] duckweeds = emps.dup;
-  string key = null;
 
   for (size_t order = 0; !duckweeds.empty; order++) {
     size_t[string] favCount = countFavs(duckweeds, order);
@@ -80,11 +78,4 @@ size_t[string] countFavs(Emp[] emps, size_t order) {
     if (emp.fav.length > order) favCount[emp.fav[order]]++;
   }
   return favCount;
-}
-
-unittest {
-//  Emp[] emps = [Emp("t2011013", ["D", "Javascript", "Vim"])
-//               ,Emp("t2011091", ["D", "Java"])
-//               ,Emp("t2011092", ["Java", "VBA"])
-//               ];
 }
