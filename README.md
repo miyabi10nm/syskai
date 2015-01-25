@@ -12,7 +12,7 @@ dmd main.d
 
 Usage
 ---
-Input file name and press Return key.
+main filepath minimam
 
 File Layout
 ---
