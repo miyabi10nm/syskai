@@ -40,7 +40,7 @@ struct Emp {
 }
 
 Emp[] toEmp(string[] lines) {
-  Emp[] emp = [];
+  Emp[] emp;
   foreach (line; lines) emp ~= line.parse;
   return emp;
 }
