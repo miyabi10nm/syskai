@@ -10,9 +10,7 @@ import
 
 void main(string[] args) {
 
-  if (args.length < 3) { 
-    writeln("usage: programname inputfile minimam"); return; 
-  }
+  if (args.length < 3) { writeln("parameter error."); return; }
   string fileName = args[1].chomp;
   if (!fileName.exists) { writeln("file not found."); return; }
 
@@ -55,14 +53,18 @@ Emp parse(string line) {
 Emp[][string] grouping(Emp[] emps, size_t minRequire) {
   Emp[][string] groups;
   Emp[] duckweeds = emps.dup;
+  size_t[string][] favCount;
 
   for (size_t order = 0; !duckweeds.empty; order++) {
-    size_t[string] favCount = countFavs(duckweeds, order);
+    favCount ~= countFavs(duckweeds, order);
     Emp[] lones;
     foreach (i, emp ; duckweeds) {
       if (emp.fav.length <= order) 
         groups["nothing"] ~= emp;
-      else if (favCount[emp.fav[order]] >= minRequire)  
+      else if (emp.fav[order] in favCount[order] &&
+               favCount[order][emp.fav[order]] >= minRequire ||
+               emp.fav[order] in groups &&
+               groups[emp.fav[order]].length >= minRequire)
         groups[emp.fav[order]] ~= emp;
       else
         lones ~= emp;
