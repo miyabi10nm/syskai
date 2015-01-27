@@ -11,6 +11,7 @@ import
 void main(string[] args) {
 
   if (args.length < 3) { writeln("parameter error."); return; }
+  if (!isNumeric(args[2].chomp)) { writeln("number format error."); return; }
   string fileName = args[1].chomp;
   if (!fileName.exists) { writeln("file not found."); return; }
 
@@ -19,7 +20,7 @@ void main(string[] args) {
   Emp[] emp = lines.toEmp;  
   emp.sort!(Emp.favSort);
 
-  size_t minimam = to!size_t(args[2]);
+  size_t minimam = to!size_t(args[2].chomp);
   Emp[][string] groups = emp.grouping(minimam); 
 
   foreach (k, g; groups) {
@@ -59,13 +60,13 @@ Emp[][string] grouping(Emp[] emps, size_t minRequire) {
     favCount ~= countFavs(duckweeds, order);
     Emp[] lones;
     foreach (i, emp ; duckweeds) {
+      string fav;
       if (emp.fav.length <= order) 
         groups["nothing"] ~= emp;
-      else if (emp.fav[order] in favCount[order] &&
-               favCount[order][emp.fav[order]] >= minRequire ||
-               emp.fav[order] in groups &&
-               groups[emp.fav[order]].length >= minRequire)
-        groups[emp.fav[order]] ~= emp;
+      else if ((fav = emp.fav[order]) in favCount[order] &&
+               favCount[order][fav] >= minRequire ||
+               fav in groups)
+        groups[fav] ~= emp;
       else
         lones ~= emp;
     }
